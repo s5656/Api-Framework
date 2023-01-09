@@ -15,4 +15,10 @@ public class UserClient {
                 .when()
                 .post("https://gorest.co.in/public/v2/users");
     }
+
+    public static Response getAllUsers() {
+        return given()
+                .when()
+                .get("https://gorest.co.in/public/v1/users");
+    }
 }
