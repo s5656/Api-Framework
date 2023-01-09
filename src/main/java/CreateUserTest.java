@@ -1,5 +1,7 @@
+import com.users.UserClient;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 
@@ -12,27 +14,17 @@ public class CreateUserTest {
         String body = "{\n" +
                 "  \"name\": \"Tenali Ramakrishna\",\n" +
                 "  \"gender\": \"male\",\n" +
-                "  \"email\": \"tenali.ramakrishna1970@gmail.com\",\n" +
+                "  \"email\": \"tenali.ramakrishna1979@gmail.com\",\n" +
                 "  \"status\": \"active\"\n" +
                 "}";
         //Act
-        createUSer(body)
+        new UserClient().createUSer(body)
                 .then()
                 .log().body()
         //Assert
                 .statusCode(201)
                 .body("id", Matchers.notNullValue())
-                .body("email", Matchers.equalTo("tenali.ramakrishna1970@gmail.com"));
-    }
-
-    private static Response createUSer(String body) {
-        return given()
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer d021d439eef6c8b55a0aab0366893a16d821ec3e2d2968432cadc6b197b18751")
-                .body(body)
-                .when()
-                .post("https://gorest.co.in/public/v2/users");
+                .body("email", Matchers.equalTo("tenali.ramakrishna1979@gmail.com"));
     }
 
     @Test
@@ -41,17 +33,16 @@ public class CreateUserTest {
         String body = "{\n" +
                 "  \"name\": \"Aditi sharma\",\n" +
                 "  \"gender\": \"female\",\n" +
-                "  \"email\": \"Aditi.sharma12@gmail.com\",\n" +
+                "  \"email\": \"Aditi.sharma124@gmail.com\",\n" +
                 "  \"status\": \"active\"\n" +
                 "}";
         //Act
-        createUSer(body)
+        new UserClient().createUSer(body)
                 .then()
                 .log().body()
         //Assert
                 .statusCode(201)
                 .body("id", Matchers.notNullValue())
-                .body("email", Matchers.equalTo("Aditi.sharma12@gmail.com"));
+                .body("email", Matchers.equalTo("Aditi.sharma124@gmail.com"));
     }
-
 }
