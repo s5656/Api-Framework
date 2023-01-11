@@ -23,9 +23,7 @@ public class CreateUserTest {
         //Act
         UserResponse userResponse = userClient.createUser(requestBody);
         //Assert
-        Assert.assertEquals(userResponse.getStatusCode(),201);
-        Assert.assertNotNull(userResponse.getData().getId());
-        Assert.assertEquals(userResponse.getData().getEmail(),requestBody.getEmail());
+        userResponse.assertUser(requestBody);
 
     }
 
@@ -36,11 +34,8 @@ public class CreateUserTest {
         CreateUserRequestBody requestBody= CreateUserRequestBody.builder()
                 .name("Aditi sharma").gender("female").email(email).status("active").build();
         //Act
-        //Act
         UserResponse userResponse = userClient.createUser(requestBody);
         //Assert
-        Assert.assertEquals(userResponse.getStatusCode(),201);
-        Assert.assertNotNull(userResponse.getData().getId());
-        Assert.assertEquals(userResponse.getData().getEmail(),requestBody.getEmail());
+        userResponse.assertUser(requestBody);
     }
 }

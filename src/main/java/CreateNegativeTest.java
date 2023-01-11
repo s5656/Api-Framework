@@ -1,8 +1,7 @@
 import com.users.UserClient;
 import create.CreateUserRequestBody;
-import create.UserResponse;
-import lombok.Builder;
-import org.hamcrest.Matchers;
+import create.UserErrorResponse;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -18,12 +17,21 @@ public class CreateNegativeTest {
                         .name("Aditi sharma").gender("female")
                         .email("Aditi.sharma.gmail.com").status("active").build();
 
+        UserErrorResponse response = userClient.userErrorResponse(requestBody);
+        Assert.assertEquals(response.getStatusCode(),422);
 
-        userClient.create(requestBody)
-                .then()
-                .statusCode(422)
-                .body("data", Matchers.hasItem(Matchers.hasEntry("field","email")))
-                .body("data",Matchers.hasItem(Matchers.hasEntry("message","is invalid")))
-                .log().body();
+        response.assertHasError("email","is invalid");
+    }
+    @Test
+    public void notAllowBlankGenderAndStatus(){
+        CreateUserRequestBody requestBody= CreateUserRequestBody.builder()
+                .name("Aditi sharma").gender("")
+                .email("Aditi.sharma@gmail.com").status("").build();
+
+        UserErrorResponse response = userClient.userErrorResponse(requestBody);
+        Assert.assertEquals(response.getStatusCode(),422);
+
+        response.assertHasError("gender","can't be blank, can be male of female");
+        response.assertHasError("status","can't be blank");
     }
 }
