@@ -1,8 +1,7 @@
 package org.example;
 
 import com.users.UserClient;
-
-import org.hamcrest.Matchers;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -19,12 +18,10 @@ public class GetAllUsers {
         //2.Act
         //3.Assert
 
-        userClient.getAllUsers()
-                .then()
-                    .statusCode(200)
-                    .body("data", Matchers.hasSize(10))
-                    .body("data",Matchers.hasItem(Matchers.hasEntry("gender","male")))
-                    .log().body();
+        com.users.GetAllUsers allUsers = userClient.getAllUsers();
+        Assert.assertEquals(allUsers.getStatusCode(),200);
+        Assert.assertEquals(allUsers.getDataList().size(),10);
+        Assert.assertTrue(allUsers.hasMaleUsers());
     }
 
 

@@ -35,9 +35,15 @@ public UserErrorResponse userErrorResponse(CreateUserRequestBody requestBody){
         return response;
     }
 
-    public Response getAllUsers() {
-        return given()
+    public GetAllUsers getAllUsers() {
+        Response response = given()
                 .when()
                 .get("https://gorest.co.in/public/v1/users");
+
+                response.then().log().body();
+        int statusCode = response.statusCode();
+        GetAllUsers getAllUsers=response.as(GetAllUsers.class);
+        getAllUsers.setStatusCode(statusCode);
+        return getAllUsers;
     }
 }
