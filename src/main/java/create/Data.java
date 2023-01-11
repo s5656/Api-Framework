@@ -1,13 +1,12 @@
 package create;
 
-import lombok.Builder;
 import lombok.Getter;
+
 @Getter
-@Builder
-public class CreateUserRequestBody {
+public class Data {
+    private int id;
     private String name;
     private String gender;
     private String email;
     private String status;
-
 }

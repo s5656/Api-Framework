@@ -1,6 +1,8 @@
 import com.users.UserClient;
 import create.CreateUserRequestBody;
+import create.UserResponse;
 import org.hamcrest.Matchers;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -16,39 +18,29 @@ public class CreateUserTest {
     public void shoudCreateMaleUser(){
         String email= String.format("%s@gmail.com",UUID.randomUUID());
         //Arrange
-        String name = "Tenali Ramakrishna";
-        String gender = "male";
-        String status = "active";
-
-        CreateUserRequestBody requestBody= new CreateUserRequestBody(name,gender,email,status);
+        CreateUserRequestBody requestBody= CreateUserRequestBody.builder()
+                .name("Tenali Ramakrishna").gender("male").email(email).status("active").build();
         //Act
-        userClient.createUSer(requestBody)
-                .then()
-                .log().body()
+        UserResponse userResponse = userClient.createUser(requestBody);
         //Assert
-                .statusCode(201)
-                .body("id", Matchers.notNullValue())
-                .body("email", Matchers.equalTo(email));
+        Assert.assertEquals(userResponse.getStatusCode(),201);
+        Assert.assertNotNull(userResponse.getData().getId());
+        Assert.assertEquals(userResponse.getData().getEmail(),requestBody.getEmail());
+
     }
 
     @Test
     public void shoudCreateFemaleUser(){
         //Arrenge
         String email= String.format("%s@gmail.com",UUID.randomUUID());
-
-        String name = "Aditi sharma";
-        String gender = "female";
-        String status = "active";
-
-        CreateUserRequestBody requestBody= new CreateUserRequestBody(name,gender,email,status);
-
+        CreateUserRequestBody requestBody= CreateUserRequestBody.builder()
+                .name("Aditi sharma").gender("female").email(email).status("active").build();
         //Act
-        new UserClient().createUSer(requestBody)
-                .then()
-                .log().body()
+        //Act
+        UserResponse userResponse = userClient.createUser(requestBody);
         //Assert
-                .statusCode(201)
-                .body("id", Matchers.notNullValue())
-                .body("email", Matchers.equalTo(email));
+        Assert.assertEquals(userResponse.getStatusCode(),201);
+        Assert.assertNotNull(userResponse.getData().getId());
+        Assert.assertEquals(userResponse.getData().getEmail(),requestBody.getEmail());
     }
 }
