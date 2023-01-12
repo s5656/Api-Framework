@@ -1,34 +1,30 @@
-import com.users.UserClient;
+import com.users.UserService;
 import create.CreateUserRequestBody;
-import create.UserErrorResponse;
+import create.GetUserErrorResponse;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class CreateNegativeTest {
-    private UserClient userClient;
+    private UserService userService;
     @BeforeClass
-    public void setUserClient(){
-        userClient=new UserClient();
+    public void setUserService(){
+        userService =new UserService();
     }
     @Test
     public void notAllowInvalidEmail(){
-      CreateUserRequestBody requestBody= CreateUserRequestBody.builder()
-                        .name("Aditi sharma").gender("female")
-                        .email("Aditi.sharma.gmail.com").status("active").build();
+      CreateUserRequestBody requestBody=new CreateUserRequestBody.Builder().email("Aditi.sharma.gmail.com").build();
 
-        UserErrorResponse response = userClient.userErrorResponse(requestBody);
+        GetUserErrorResponse response = userService.userErrorResponse(requestBody);
         Assert.assertEquals(response.getStatusCode(),422);
 
         response.assertHasError("email","is invalid");
     }
     @Test
     public void notAllowBlankGenderAndStatus(){
-        CreateUserRequestBody requestBody= CreateUserRequestBody.builder()
-                .name("Aditi sharma").gender("")
-                .email("Aditi.sharma@gmail.com").status("").build();
+        CreateUserRequestBody requestBody=new CreateUserRequestBody.Builder().gender("").status("").build();
 
-        UserErrorResponse response = userClient.userErrorResponse(requestBody);
+        GetUserErrorResponse response = userService.userErrorResponse(requestBody);
         Assert.assertEquals(response.getStatusCode(),422);
 
         response.assertHasError("gender","can't be blank, can be male of female");

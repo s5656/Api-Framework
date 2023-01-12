@@ -1,27 +1,23 @@
 import com.users.UserClient;
+import com.users.UserService;
 import create.CreateUserRequestBody;
 import create.UserResponse;
-import org.hamcrest.Matchers;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.UUID;
-
 public class CreateUserTest {
-    private UserClient userClient;
+    private UserService userService;
     @BeforeClass
-    public void setUserClient(){
-        userClient=new UserClient();
+    public void setUserService(){
+        userService = new UserService();
     }
     @Test
     public void shoudCreateMaleUser(){
-        String email= String.format("%s@gmail.com",UUID.randomUUID());
         //Arrange
-        CreateUserRequestBody requestBody= CreateUserRequestBody.builder()
-                .name("Tenali Ramakrishna").gender("male").email(email).status("active").build();
+        CreateUserRequestBody requestBody = new CreateUserRequestBody.Builder()
+                .gender("male").build();
         //Act
-        UserResponse userResponse = userClient.createUser(requestBody);
+        UserResponse userResponse = userService.createUser(requestBody);
         //Assert
         userResponse.assertUser(requestBody);
 
@@ -30,11 +26,10 @@ public class CreateUserTest {
     @Test
     public void shoudCreateFemaleUser(){
         //Arrenge
-        String email= String.format("%s@gmail.com",UUID.randomUUID());
-        CreateUserRequestBody requestBody= CreateUserRequestBody.builder()
-                .name("Aditi sharma").gender("female").email(email).status("active").build();
+        CreateUserRequestBody requestBody = new CreateUserRequestBody.Builder()
+                .gender("female").build();
         //Act
-        UserResponse userResponse = userClient.createUser(requestBody);
+        UserResponse userResponse = userService.createUser(requestBody);
         //Assert
         userResponse.assertUser(requestBody);
     }

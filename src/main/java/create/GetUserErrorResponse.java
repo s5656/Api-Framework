@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class UserErrorResponse {
+public class GetUserErrorResponse {
 @Setter
     private int statusCode;
     private String meta;
